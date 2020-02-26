@@ -7,6 +7,10 @@ A hands on guided lesson walking through how to use the Aqua open source tools T
 
 
 ## Part 0
+### Prerequisites
+Have a simple kubernetes cluster up and running using Vagrant by following the instructions below.
+Ensure there is internet connectivity from the lab Kubernetes environment.
+
 ### Prep the environment.
 Install Vagrant 2.2.7 with the relevant packages for your OS: https://www.vagrantup.com/downloads.html
 
@@ -15,15 +19,17 @@ git clone https://github.com/dstubked/aqua-oss.git
 cd aqua-oss
 vagrant up
 
-#### Check docker is installed
+#### Check docker is installed and make sure there is internet connectivity
 ```
 On master:
 vagrant ssh kmaster
-docker -v
+docker -v (should return docker version)
+curl ifconfig.co (should return your public IP)
 
 On worker:
 vagrant ssh kworker
-docker -v
+docker -v (should return docker version)
+curl ifconfig.co (should return your public IP)
 ```
 
 ## Part 1 - Trivy (https://github.com/aquasecurity/trivy)
@@ -116,14 +122,10 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s http
 chmod +x ./kubectl
 ```
 
-##### CHANGE the job’s metadata: name: from “kube-hunter” to something unique to you “$USER-kube-hunter” to avoid collisions
-```
-vim job.yaml
-```
 ### Also in the job.yaml we will file make a few changes
 ```
 metadata:
-  name: sg-1971-kube-hunter
+  name: kube-hunter
 # ADD a new parameter by CHANGING
         args: ["--pod"]
 # to
@@ -137,9 +139,9 @@ cat job.yaml | sed 's/\["--pod"\]/\["--pod","--quick"\]/' | sed "s/name: kube-hu
 
 #### NOTE: the --quick argument limits the network interface scanning.   It can turn a 45 min scan into seconds. Better for demos but not for security.
 ```
-./kubectl create -f ./job2.yaml
-./kubectl describe job “your-job-name”
-./kubectl logs “pod name” > myresultspassive.txt
+kubectl create -f ./job2.yaml
+kubectl describe job “your-job-name”
+kubectl logs “pod name” > myresultspassive.txt
 
 cat myresultspassive.txt
 ```
@@ -147,7 +149,7 @@ cat myresultspassive.txt
 ## Part 2b
 ### First delete the old job
 ```
-./kubectl delete -f ./job2.yaml
+kubectl delete -f ./job2.yaml
 ```
 ### In the job.yaml file we will make one more change
 ```
@@ -164,9 +166,9 @@ cat job.yaml | sed 's/\["--pod"\]/\["--pod","--quick","--active"\]/' | sed "s/na
 #### NOTE: the --active argument extends the test to use finding to test for specific exploits. Better for security. Most effective run within the cluster.
 ### Let's try it again
 ```
-./kubectl create -f ./job3.yaml
-./kubectl describe job “your-job-name”
-./kubectl logs “pod name” > myresultsactive.txt
+kubectl create -f ./job3.yaml
+kubectl describe job “your-job-name”
+kubectl logs “pod name” > myresultsactive.txt
 
 cat myresultsactive.txt
 
