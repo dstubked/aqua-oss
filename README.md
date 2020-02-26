@@ -15,9 +15,11 @@ Ensure there is internet connectivity from the lab Kubernetes environment.
 Install Vagrant 2.2.7 with the relevant packages for your OS: https://www.vagrantup.com/downloads.html
 
 ### Install lab environment
+```
 git clone https://github.com/dstubked/aqua-oss.git
 cd aqua-oss
 vagrant up
+```
 
 #### Check docker is installed and make sure there is internet connectivity
 ```
