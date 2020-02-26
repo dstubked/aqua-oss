@@ -38,7 +38,7 @@ docker -v (should return docker version)
 curl ifconfig.co (should return your public IP)
 
 On worker:
-vagrant ssh kworker
+vagrant ssh kworker1
 docker -v (should return docker version)
 curl ifconfig.co (should return your public IP)
 ```
