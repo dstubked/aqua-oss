@@ -2,8 +2,8 @@
 A hands on guided lesson walking through how to use the Aqua open source tools Trivy, Kube-Bench and Kube-hunter.
 
 <img src="https://github.com/aquasecurity/trivy/blob/master/imgs/logo.png" height="150" align="left">
-<img src="https://github.com/aquasecurity/kube-bench/blob/master/images/kube-bench.png" height="150">
-<img src="https://github.com/aquasecurity/kube-hunter/blob/master/kube-hunter.png" height="150">
+<img src="https://github.com/aquasecurity/kube-hunter/blob/master/kube-hunter.png" height="150" align="left">
+<img src="https://github.com/eurogig/hands-on-trivy-to-tracee/blob/master/temptraceelogo.png" height="150">
 
 
 ## Part 0
