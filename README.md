@@ -21,6 +21,11 @@ cd aqua-oss
 vagrant up
 ```
 
+### Check VMs are up
+```
+vagrant status
+```
+
 #### Check docker is installed and make sure there is internet connectivity
 ```
 On master:
