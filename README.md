@@ -12,7 +12,7 @@ Have a simple kubernetes cluster up and running using Vagrant by following the i
 Ensure there is internet connectivity from the lab Kubernetes environment.
 
 ### Prep the environment.
-Install Vagrant 2.2.7 with the relevant packages for your OS: https://www.vagrantup.com/downloads.html
+Install Vagrant 2.2.7 with the relevant packages for your supported OS: https://www.vagrantup.com/downloads.html
 
 ### Install lab environment
 ```
