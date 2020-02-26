@@ -8,6 +8,8 @@ A hands on guided lesson walking through how to use the Aqua open source tools T
 
 ## Part 0
 ### Prep the environment.
+Install Vagrant 2.2.7 with the relevant packages for your OS: https://www.vagrantup.com/downloads.html
+
 
 #### Check docker is installed
 ```
