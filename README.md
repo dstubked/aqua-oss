@@ -24,6 +24,10 @@ vagrant up
 ### Check VMs are up
 ```
 vagrant status
+Current machine states:
+
+kmaster                   running (virtualbox)
+kworker1                  running (virtualbox)
 ```
 
 #### Check docker is installed and make sure there is internet connectivity
