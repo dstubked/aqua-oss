@@ -75,8 +75,13 @@ trivy jfloff/alpine-python:3.8-slim
 Be specific on tags!!!   
 Using the latest tag or non-specific tags can mean trivy could produce misleading results based on local caching of the image.
 
+#### Check the differences between the two results
 
-## Part 2 Kube-hunter (remote) (https://github.com/aquasecurity/kube-hunter)
+## Part 2 - kube-bench (https://github.com/aquasecurity/kube-bench)
+  
+
+
+## Part 3 Kube-hunter (https://github.com/aquasecurity/kube-hunter)
 
 <img src="https://github.com/aquasecurity/kube-hunter/blob/master/kube-hunter.png" height="150">
 
@@ -155,88 +160,3 @@ cat myresultsactive.txt
 
 diff myresultsactive.txt myresultspassive.txt
 ```
-
-#### Check the differences between the two results
-
-## Part 3 - Tracee (https://github.com/aquasecurity/tracee)
-
-### Tracee and Intro to eBPF (BPF references http://www.brendangregg.com/ebpf.html)
-<img src="https://github.com/eurogig/hands-on-trivy-to-tracee/blob/master/temptraceelogo.png" height="150">
-
-### Install BCC (and BCC for python) 
-
-#### Warning:  Don’t install pip install bcc. Bad.  This project is not our BCC https://pypi.org/project/bcc/
-```
-sudo apt-get -y install libbcc
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D4284CDD
-echo "deb https://repo.iovisor.org/apt/bionic bionic main" | sudo tee /etc/apt/sources.list.d/iovisor.list
-sudo apt-get update
-sudo apt-get -y install python-bcc
-sudo apt-get -y install python3-bcc
-```
-
-#### Create a split terminal or separate terminals for each of the following commands.
-
-### Test our using eBPF
-### Test Program:
-```python
-#!/usr/bin/python
-  
-from bcc import BPF
-from time import sleep
-
-program = """
-    int hello(void *ctx) {
-        bpf_trace_printk("Hello DevOps Playground\\n");
-        return 0;
-    }
-"""
-
-b=BPF(text=program)
-b.attach_kprobe(event="sys_clone",fn_name="hello")
-b.trace_print()
-```
-#### Create a new file called hello-devops.py and copy the contents above into it.
-
-#### Run your program in terminal 1
-```
-chmod +x ./hello-devops.py
-sudo ./hello-devops.py
-```
-#### It should be stuck waiting for activity
-
-#### Open a second terminal and execute some simple commands in terminal 2 (eg. ls, ps, cd)
-#### Then try in terminal 2
-```
-docker run -it --rm alpine sh
-```
-#### Run some of the same simple commands (eg ls, ps)
-
-#### Observe the output in terminal 1
-### What is the difference?
-
-### If there is time try running your program using strace
-### Example
-```
-sudo strace ./hello-devops.py
-```
-#### Run some of the same simple commands (eg ls, ps)
-
-## Install Tracee by cloning the git repo
-
-## Tracee (https://github.com/aquasecurity/tracee)
-```
-git clone https://github.com/aquasecurity/tracee.git
-```
-
-### Run in one terminal
-```
-sudo ./start.py -c
-```
-### Run in another terminal
-```
-docker run -it --rm alpine sh
-```
-### Try running similar commands in the docker shell to what you ran in the linux shell earlier and also experiment with networking commands like ping
-
-### Observe the detailed tracing that appears in the first terminal!  There is a lot of detail.  Imagine what you could do with all that information programmatically to detect malicious behaviour built into containers from 3rd party providers or unvetted registries.  
