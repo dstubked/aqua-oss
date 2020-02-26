@@ -10,9 +10,19 @@ A hands on guided lesson walking through how to use the Aqua open source tools T
 ### Prep the environment.
 Install Vagrant 2.2.7 with the relevant packages for your OS: https://www.vagrantup.com/downloads.html
 
+### Install lab environment
+git clone https://github.com/dstubked/aqua-oss.git
+cd aqua-oss
+vagrant up
 
 #### Check docker is installed
 ```
+On master:
+vagrant ssh kmaster
+docker -v
+
+On worker:
+vagrant ssh kworker
 docker -v
 ```
 
