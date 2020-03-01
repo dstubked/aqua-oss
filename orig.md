@@ -105,6 +105,26 @@ Using the latest tag or non-specific tags can mean trivy could produce misleadin
 
 ## Part 2 Kube-bench (remote) (https://github.com/aquasecurity/kube-bench)
 
+<img src="https://github.com/aquasecurity/kube-bench/raw/master/images/kube-bench.png" height="150">
+
+### Install kube-bench by cloning the git repo
+```
+git clone https://github.com/aquasecurity/kube-bench.git
+```
+
+#### Lets run kube-bench now directly as a pod in the cluster
+```
+cd kube-bench
+kubectl apply -f job.yaml
+```
+
+#### View the kube-bench results
+```
+kubectl get pods
+Look for kube-bench job name..
+kubectl logs pod_name
+```
+
 ## Part 3 Kube-hunter (remote) (https://github.com/aquasecurity/kube-hunter)
 
 <img src="https://github.com/aquasecurity/kube-hunter/blob/master/kube-hunter.png" height="150">
