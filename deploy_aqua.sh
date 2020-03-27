@@ -328,7 +328,7 @@ aqua_console_url="http://172.42.42.101:$NodePort"
 printf "\nChecking if Aqua Server is up\n"
 i=1
 until $(curl -m 5 --output /dev/null --silent --fail "$aqua_console_url/#!/login"); do
-    if [ ${i} -eq 60 ]; then
+    if [ ${i} -eq 100 ]; then
        echo "Time out waiting for Aqua Server. Deployment must be finished manually."
        break
     fi
