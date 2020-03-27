@@ -31,6 +31,8 @@ docker pull $AQUA_CONSOLE_IMAGE
 docker pull $AQUA_GATEWAY_IMAGE
 docker pull $AQUA_ENFORCER_IMAGE
 
+KUBECONFIG=/home/vagrant/.kube/config
+
 kubectl create namespace aqua
 
 kubectl create secret docker-registry aqua-registry \
