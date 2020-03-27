@@ -16,6 +16,7 @@ bash /joincluster.sh >/dev/null 2>&1
 # Copy kubecfg file into worker
 mkdir /home/vagrant/.kube
 sshpass -p "kubeadmin" scp -o StrictHostKeyChecking=no kmaster.example.com:/home/vagrant/.kube/config /home/vagrant/.kube/config
+chown -R vagrant:vagrant .kube
 echo "[TASK 2] Auto Installing Aqua $IMAGE_TAG"
 #Other vars
 AQUA_DB_IMAGE=registry.aquasec.com/database:$IMAGE_TAG
