@@ -72,3 +72,6 @@ echo -e "kubeadmin\nkubeadmin" | passwd root
 
 # Update vagrant user's bashrc file
 echo "export TERM=xterm" >> /etc/bashrc
+
+# Install jq
+apt-get install -y jq
