@@ -25,6 +25,7 @@ AQUA_GATEWAY_IMAGE=registry.aquasec.com/gateway:$IMAGE_TAG
 AQUA_ENFORCER_IMAGE=registry.aquasec.com/enforcer:$IMAGE_TAG
 
 docker login registry.aquasec.com -u $AQUA_REGISTRY_USERNAME -p $AQUA_REGISTRY_PASSWORD
+sleep 20
 docker pull $AQUA_DB_IMAGE
 docker pull $AQUA_CONSOLE_IMAGE
 docker pull $AQUA_GATEWAY_IMAGE
