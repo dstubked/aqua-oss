@@ -1117,3 +1117,132 @@ EOF
 
 kubectl --kubeconfig=/home/vagrant/.kube/config create namespace sock-shop
 kubectl --kubeconfig=/home/vagrant/.kube/config apply -f complete-demo.yaml
+
+# Setup Wordpress Demo
+# Set a new secret
+echo "Setting up Wordpress Demo"
+sleep 60
+curl "http://$aqua_console_url/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
+sleep 5
+echo
+
+cat > blog-wordpress.yaml << EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blog
+---
+apiVersion: v1
+data:
+  username: cm9vdA==
+kind: Secret
+metadata:
+  name: mysql-user
+  namespace: blog
+type: Opaque
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-db
+  namespace: blog
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       app: wp-db
+  template:
+    metadata:
+      labels:
+        app: wp-db
+    spec:
+      containers:
+      - name: wp-db
+        image: mysql:8.0.0
+        env:
+        - name: "MYSQL_ROOT_PASSWORD"
+          value: "{aqua.mysql.password}"
+        ports:
+          - containerPort: 3306
+        readinessProbe:
+            exec:
+              command:
+              - stat
+              - /var/run/mysqld/mysqld.sock
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 2
+            timeoutSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-db
+  namespace: blog
+  labels:
+    app: wp-db
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wp-db
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-server
+  namespace: blog
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       app: wp-server
+  template:
+    metadata:
+      labels:
+        app: wp-server
+    spec:
+      containers:
+      - name: wp-server
+        image: dstubked/wordpress:plugins
+        env:
+        - name: "WORDPRESS_DB_HOST"
+          value: "wp-db"
+        - name: "WORDPRESS_DB_USER"
+          valueFrom:
+            secretKeyRef:
+              name: "mysql-user"
+              key: "username"
+        - name: "WORDPRESS_DB_PASSWORD"
+          value: "{aqua.mysql.password}"
+        ports:
+          - containerPort: 80
+        readinessProbe:
+            httpGet:
+              path: /wp-admin/
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 2
+            timeoutSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-server
+  namespace: blog
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: wp-server
+  type: NodePort
+EOF
+
+kubectl --kubeconfig=/home/vagrant/.kube/config apply -f blog-wordpress.yaml
+
+Echo "* * * * Demo Setup Completed! * * * *"
