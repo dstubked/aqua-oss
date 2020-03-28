@@ -33,19 +33,19 @@ docker pull $AQUA_ENFORCER_IMAGE
 
 KUBECONFIG=/home/vagrant/.kube/config
 
-kubectl create namespace aqua
+kubectl --kubeconfig=/home/vagrant/.kube/config create namespace aqua
 
-kubectl create secret docker-registry aqua-registry \
+kubectl --kubeconfig=/home/vagrant/.kube/config create secret docker-registry aqua-registry \
         --docker-server=registry.aquasec.com \
         --docker-username=$AQUA_REGISTRY_USERNAME \
         --docker-password=$AQUA_REGISTRY_PASSWORD \
         --docker-email=no@email.com -n aqua
 
 
-kubectl create secret generic aqua-db \
+kubectl --kubeconfig=/home/vagrant/.kube/config create secret generic aqua-db \
         --from-literal=password=$AQUA_DB_PASSWORD -n aqua
 
-kubectl create -n aqua -f - <<EOF
+kubectl --kubeconfig=/home/vagrant/.kube/config create -n aqua -f - <<EOF
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -336,12 +336,12 @@ spec:
           protocol: TCP
 EOF
 
-kubectl create -f deploycsp.yaml -n aqua
+kubectl --kubeconfig=/home/vagrant/.kube/config create -f deploycsp.yaml -n aqua
 
 #Check Aqua gateway and console status
 echo "Get Aqua service status: kubectl get svc -n aqua"
-kubectl get svc -n aqua
-NodePort=`kubectl describe service aqua-web -n aqua | grep NodePort | grep aqua-web | tail -1 | awk '{print substr($3,1,5)}'`
+kubectl --kubeconfig=/home/vagrant/.kube/config get svc -n aqua
+NodePort=`kubectl --kubeconfig=/home/vagrant/.kube/config describe service aqua-web -n aqua | grep NodePort | grep aqua-web | tail -1 | awk '{print substr($3,1,5)}'`
 aqua_console_url="http://172.42.42.101:$NodePort"
 echo ""
 echo "Kubernetes Assigned Aqua Address is: $aqua_console_url"
@@ -360,7 +360,7 @@ done
 printf '\n'
 echo "Success!"
 echo "Get Aqua status: kubectl get pods -n aqua"
-kubectl get pods -n aqua
+kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
 
 # Start Enforcer install
 # Install JQ
@@ -398,7 +398,7 @@ EOF
 # Get Aqua deployment environment details
 #NodePort=`kubectl describe service aqua-web -n aqua | grep NodePort | grep aqua-web | tail -1 | awk '{print substr($3,1,5)}'`
 #aqua_console_url="http://172.42.42.101:$NodePort"
-gateway_podname=`kubectl get pod -n aqua | grep gateway | awk '{print $1}'`
+gateway_podname=`kubectl --kubeconfig=/home/vagrant/.kube/config get pod -n aqua | grep gateway | awk '{print $1}'`
 gateway_settings=enforcer-group.json
 
 # Update with your bearer token 
@@ -440,9 +440,9 @@ curl --location --request POST "${aqua_console_url}/api/v1/hostsbatch" \
 #cat $enforcer_group.yaml | sed "s/\$orig/\$new_version/g" > deploy_enforcers.yaml
 
 # Apply the enforcer daemonset yaml
-kubectl apply -f $enforcer_group.yaml -n aqua
+kubectl --kubeconfig=/home/vagrant/.kube/config apply -f $enforcer_group.yaml -n aqua
 sleep 20
-kubectl get pods -n aqua
+kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
 echo""
 echo "Installation Done!"
 echo "Login to Aqua here: $aqua_console_url"
