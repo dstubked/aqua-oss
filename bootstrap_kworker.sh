@@ -461,7 +461,7 @@ echo "Login to Aqua here: $aqua_console_url"
 # Deploy Sock Shop Demo
 
 cat > complete-demo.yaml << EOF
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: carts-db
@@ -515,7 +515,7 @@ spec:
   selector:
     name: carts-db
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: carts
@@ -573,7 +573,7 @@ spec:
   selector:
     name: carts
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue-db
@@ -616,7 +616,7 @@ spec:
   selector:
     name: catalogue-db
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue
@@ -662,7 +662,7 @@ spec:
   selector:
     name: catalogue
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: front-end
@@ -709,7 +709,7 @@ spec:
   selector:
     name: front-end
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: orders-db
@@ -763,7 +763,7 @@ spec:
   selector:
     name: orders-db
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: orders
@@ -821,7 +821,7 @@ spec:
   selector:
     name: orders
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: payment
@@ -867,7 +867,7 @@ spec:
   selector:
     name: payment
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: queue-master
@@ -906,7 +906,7 @@ spec:
   selector:
     name: queue-master
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq
@@ -953,7 +953,7 @@ spec:
   selector:
     name: rabbitmq
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shipping
@@ -1011,7 +1011,7 @@ spec:
   selector:
     name: shipping
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-db
@@ -1065,7 +1065,7 @@ spec:
   selector:
     name: user-db
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user
@@ -1122,7 +1122,7 @@ kubectl --kubeconfig=/home/vagrant/.kube/config apply -f complete-demo.yaml
 # Set a new secret
 echo "Setting up Wordpress Demo"
 sleep 60
-curl "http://$aqua_console_url/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
+curl "http://{$aqua_console_url}/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
 sleep 5
 echo
 
@@ -1245,4 +1245,4 @@ EOF
 
 kubectl --kubeconfig=/home/vagrant/.kube/config apply -f blog-wordpress.yaml
 
-Echo "* * * * Demo Setup Completed! * * * *"
+echo "* * * * Demo Setup Completed! * * * *"
