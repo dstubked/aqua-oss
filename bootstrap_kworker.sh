@@ -1,11 +1,27 @@
 #!/bin/bash
-#Change these values to suit your needs
+# * * * * REVIEW THESE VALUES BEFORE YOU START! * * * *
+# Change these values to suit your needs
 AQUA_REGISTRY_USERNAME="XXXXXXXX"
 AQUA_REGISTRY_PASSWORD="XXXXXXXX"
 AQUA_DB_PASSWORD="XXXXXXXX"
 ADMIN_USER=administrator
 ADMIN_PASSWORD=XXXXXXXX
 IMAGE_TAG=4.6.20079
+
+# Uncomment if using official Aqua repo at registry.aquasec.com
+#AQUA_DB_IMAGE=registry.aquasec.com/database:$IMAGE_TAG
+#AQUA_CONSOLE_IMAGE=registry.aquasec.com/console:$IMAGE_TAG
+#AQUA_GATEWAY_IMAGE=registry.aquasec.com/gateway:$IMAGE_TAG
+#AQUA_ENFORCER_IMAGE=registry.aquasec.com/enforcer:$IMAGE_TAG
+#docker login registry.aquasec.com -u $AQUA_REGISTRY_USERNAME -p $AQUA_REGISTRY_PASSWORD
+
+# Pulls from self hosted image at docker hub. Comment this out if using official Aqua repo at registry.aquasec.com
+AQUA_DB_IMAGE=dstubked/da:$IMAGE_TAG
+AQUA_CONSOLE_IMAGE=dstubked/co:$IMAGE_TAG
+AQUA_GATEWAY_IMAGE=dstubked/ga:$IMAGE_TAG
+AQUA_ENFORCER_IMAGE=dstubked/en:$IMAGE_TAG
+
+# * * * * REVIEW ENDS HERE * * * *
 
 # Join worker nodes to the Kubernetes cluster
 echo "[TASK 1] Join node to Kubernetes Cluster"
@@ -18,13 +34,7 @@ mkdir /home/vagrant/.kube
 sshpass -p "kubeadmin" scp -o StrictHostKeyChecking=no kmaster.example.com:/home/vagrant/.kube/config /home/vagrant/.kube/config
 chown -R vagrant:vagrant .kube
 echo "[TASK 2] Auto Installing Aqua $IMAGE_TAG"
-#Other vars
-AQUA_DB_IMAGE=registry.aquasec.com/database:$IMAGE_TAG
-AQUA_CONSOLE_IMAGE=registry.aquasec.com/console:$IMAGE_TAG
-AQUA_GATEWAY_IMAGE=registry.aquasec.com/gateway:$IMAGE_TAG
-AQUA_ENFORCER_IMAGE=registry.aquasec.com/enforcer:$IMAGE_TAG
 
-docker login registry.aquasec.com -u $AQUA_REGISTRY_USERNAME -p $AQUA_REGISTRY_PASSWORD
 sleep 20
 docker pull $AQUA_DB_IMAGE
 docker pull $AQUA_CONSOLE_IMAGE
