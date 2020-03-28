@@ -1122,7 +1122,7 @@ kubectl --kubeconfig=/home/vagrant/.kube/config apply -f complete-demo.yaml
 # Set a new secret
 echo "Setting up Wordpress Demo"
 sleep 60
-curl "http://{$aqua_console_url}/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
+curl "${aqua_console_url}/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
 sleep 5
 echo
 
