@@ -339,7 +339,7 @@ EOF
 kubectl --kubeconfig=/home/vagrant/.kube/config create -f deploycsp.yaml -n aqua
 
 #Check Aqua gateway and console status
-echo "Get Aqua service status: kubectl get svc -n aqua"
+echo "Get Aqua service status: kubectl --kubeconfig=/home/vagrant/.kube/config get svc -n aqua"
 kubectl --kubeconfig=/home/vagrant/.kube/config get svc -n aqua
 NodePort=`kubectl --kubeconfig=/home/vagrant/.kube/config describe service aqua-web -n aqua | grep NodePort | grep aqua-web | tail -1 | awk '{print substr($3,1,5)}'`
 aqua_console_url="http://172.42.42.101:$NodePort"
@@ -359,7 +359,7 @@ until $(curl -m 5 --output /dev/null --silent --fail "$aqua_console_url/#!/login
 done
 printf '\n'
 echo "Success!"
-echo "Get Aqua status: kubectl get pods -n aqua"
+echo "Get Aqua status: kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua"
 kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
 
 # Start Enforcer install
