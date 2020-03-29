@@ -460,7 +460,7 @@ echo "Login to Aqua here: $aqua_console_url"
 
 # Deploy Sock Shop Demo
 
-cat > complete-demo.yaml << EOF
+cat > sock-shop.yaml << EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
