@@ -469,6 +469,9 @@ metadata:
     name: carts-db
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: carts-db
   replicas: 1
   template:
     metadata:
@@ -523,6 +526,9 @@ metadata:
     name: carts
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: carts
   replicas: 1
   template:
     metadata:
@@ -581,6 +587,9 @@ metadata:
     name: catalogue-db
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: catalogue-db
   replicas: 1
   template:
     metadata:
@@ -624,6 +633,9 @@ metadata:
     name: catalogue
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: catalogue
   replicas: 1
   template:
     metadata:
@@ -668,6 +680,9 @@ metadata:
   name: front-end
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: front-end
   replicas: 1
   template:
     metadata:
@@ -717,6 +732,9 @@ metadata:
     name: orders-db
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: orders-db
   replicas: 1
   template:
     metadata:
@@ -771,6 +789,9 @@ metadata:
     name: orders
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: orders
   replicas: 1
   template:
     metadata:
@@ -829,6 +850,9 @@ metadata:
     name: payment
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: payment
   replicas: 1
   template:
     metadata:
@@ -875,6 +899,9 @@ metadata:
     name: queue-master
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: queue-master
   replicas: 1
   template:
     metadata:
@@ -914,6 +941,9 @@ metadata:
     name: rabbitmq
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: rabbitmq
   replicas: 1
   template:
     metadata:
@@ -961,6 +991,9 @@ metadata:
     name: shipping
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: shipping
   replicas: 1
   template:
     metadata:
@@ -1019,6 +1052,9 @@ metadata:
     name: user-db
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: user-db
   replicas: 1
   template:
     metadata:
@@ -1073,6 +1109,9 @@ metadata:
     name: user
   namespace: sock-shop
 spec:
+  selector:
+    matchLabels:
+      name: user
   replicas: 1
   template:
     metadata:
@@ -1116,7 +1155,7 @@ spec:
 EOF
 
 kubectl --kubeconfig=/home/vagrant/.kube/config create namespace sock-shop
-kubectl --kubeconfig=/home/vagrant/.kube/config apply -f complete-demo.yaml
+kubectl --kubeconfig=/home/vagrant/.kube/config apply -f sock-shop.yaml
 
 # Setup Wordpress Demo
 # Set a new secret
