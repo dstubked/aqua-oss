@@ -1284,4 +1284,8 @@ EOF
 
 kubectl --kubeconfig=/home/vagrant/.kube/config apply -f blog-wordpress.yaml
 
+# Deploy Jenkins on Docker
+echo "Deploying Jenkins on Docker"
+docker run -d --name jenkins-server --restart=always -p 8080:8080 dstubked/jenkins:latest
+
 echo "* * * * Demo Setup Completed! * * * *"
