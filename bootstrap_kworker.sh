@@ -132,3 +132,8 @@ printf '\n'
 echo "Success!"
 echo "Get Aqua status: kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua"
 kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
+
+echo "Deploy Sock Shop Application"
+
+kubectl --kubeconfig=/home/vagrant/.kube/config create namespace sock-shop
+kubectl --kubeconfig=/home/vagrant/.kube/config apply -f sock-shop.yaml
