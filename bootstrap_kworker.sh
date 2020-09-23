@@ -1,5 +1,10 @@
 #!/bin/bash
-
+AQUA_REGISTRY_USERNAME="XXXXXXXX"
+AQUA_REGISTRY_PASSWORD="XXXXXXXX"
+ADMIN_USER=administrator
+ADMIN_PASSWORD=XXXXXXXX
+AQUA_LICENSE_KEY="XXXXXXXX"
+IMAGE_TAG=5.3.20261
 
 # Join worker nodes to the Kubernetes cluster
 echo "[TASK 1] Join node to Kubernetes Cluster"
@@ -105,8 +110,8 @@ chmod +x aquactl
 export KUBECONFIG=/home/vagrant/.kube/config
 
 ./aquactl deploy csp \
-    --approve --version 5.3.20261 --platform kubernetes --server-service NodePort --aqua-username demo@aquasec.com --aqua-password 9aV6xpQE --namespace aqua --admin-password Password1 --storage-class local-storage \
-    --license cdIdZOB3g8fwprpF3HK6fYwXdXRdu9OwomF-WtPPotJiQ9fRX65bteHIb3pwFm0ciXiiSdgsyXKMChlKpFboIhJjJnEpocTzNHuqAMadGQdOPpsLN0wJOsCL5HuxAFAwXxAT79M3S34FHfEK7i0Hqcr2hNhe5yQV-K91MuDJf9R-OChif3h9R5ZyVl9ZnX47WdvCv9ZRzw0DdrHgNhsV3qzjomtM4t8eY57S-vmmlHWBHH4GfvTNVEZge2nFeNOiplknTpR1sqHCeC5WI2tfy1kfdAuR8SYO79d8Oq8EvY4EeS2OVc3dRbQrAPjfLiCfBWgCTuDFxKWapX6ywIQNSxL0XP8UnDoH6i8y8byRd0FK3CXzLu81TQNVlrbSvAGMf2_AbBkNuZiGU9rXoWbY9D0pxmfRDmqBpSwM46COJXvYE_13tpbu-B2n6Hsxtl4W0U6JuBzLYjWmjRJZnsDD24qnEQegCy-svl3dydkS5-WulUVAqr2E8TX2p_pQVv9WM_TjbO9gDv3yGWqyUeD0KeJspOxisq8RavJI9t7rCRpM8Db2q8fiwYtKrqxKp0ix3J4EuA58X0_TYRdyG6VJ8xkLReP3jUpPOd8m0fDOQEs= \
+    --approve --version $IMAGE_TAG --platform kubernetes --server-service NodePort --aqua-username $AQUA_REGISTRY_USERNAME --aqua-password $AQUA_REGISTRY_PASSWORD --namespace aqua --admin-password $ADMIN_PASSWORD --storage-class local-storage \
+    --license $AQUA_LICENSE_KEY \
     --deploy-enforcer --deploy-scanner --no-spinner
 
 #Check Aqua gateway and console status
@@ -133,7 +138,23 @@ echo "Success!"
 echo "Get Aqua status: kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua"
 kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
 
-echo "Deploy Sock Shop Application"
+echo "[TASK 3] Deploy Sock Shop"
 
 kubectl --kubeconfig=/home/vagrant/.kube/config create namespace sock-shop
-kubectl --kubeconfig=/home/vagrant/.kube/config apply -f sock-shop.yaml
+kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubusercontent.com/dstubked/aqua-oss/master/sock-shop.yaml
+
+# Setup Wordpress Demo
+# Set a new secret
+echo "[TASK 4] Deploy Sock Shop"
+sleep 60
+curl "${aqua_console_url}/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
+sleep 5
+echo
+
+kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubusercontent.com/dstubked/aqua-oss/master/blog-wordpress.yaml
+
+# Deploy Jenkins on Docker
+[TASK 4] Deploy Sock Shop
+docker run -d --name jenkins-server --restart=always -p 8080:8080 dstubked/jenkins:latest
+
+echo "* * * * Demo Setup Completed! * * * *"
