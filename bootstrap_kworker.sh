@@ -105,7 +105,7 @@ chmod +x aquactl
 export KUBECONFIG=/home/vagrant/.kube/config
 
 ./aquactl deploy csp \
-    --approve --version 5.0 --platform kubernetes --server-service NodePort --aqua-username demo@aquasec.com --aqua-password 9aV6xpQE --namespace aqua --admin-password Password1 --storage-class local-storage \
+    --approve --version 5.3 --platform kubernetes --server-service NodePort --aqua-username demo@aquasec.com --aqua-password 9aV6xpQE --namespace aqua --admin-password Password1 --storage-class local-storage \
     --license cdIdZOB3g8fwprpF3HK6fYwXdXRdu9OwomF-WtPPotJiQ9fRX65bteHIb3pwFm0ciXiiSdgsyXKMChlKpFboIhJjJnEpocTzNHuqAMadGQdOPpsLN0wJOsCL5HuxAFAwXxAT79M3S34FHfEK7i0Hqcr2hNhe5yQV-K91MuDJf9R-OChif3h9R5ZyVl9ZnX47WdvCv9ZRzw0DdrHgNhsV3qzjomtM4t8eY57S-vmmlHWBHH4GfvTNVEZge2nFeNOiplknTpR1sqHCeC5WI2tfy1kfdAuR8SYO79d8Oq8EvY4EeS2OVc3dRbQrAPjfLiCfBWgCTuDFxKWapX6ywIQNSxL0XP8UnDoH6i8y8byRd0FK3CXzLu81TQNVlrbSvAGMf2_AbBkNuZiGU9rXoWbY9D0pxmfRDmqBpSwM46COJXvYE_13tpbu-B2n6Hsxtl4W0U6JuBzLYjWmjRJZnsDD24qnEQegCy-svl3dydkS5-WulUVAqr2E8TX2p_pQVv9WM_TjbO9gDv3yGWqyUeD0KeJspOxisq8RavJI9t7rCRpM8Db2q8fiwYtKrqxKp0ix3J4EuA58X0_TYRdyG6VJ8xkLReP3jUpPOd8m0fDOQEs= \
     --deploy-enforcer --deploy-scanner
 
