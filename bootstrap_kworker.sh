@@ -165,7 +165,7 @@ echo "* * * * Demo Setup Completed! * * * *"
 echo "Kubernetes Assigned Aqua Address is: $aqua_console_url."
 echo "Aqua admin user name is $ADMIN_USER
 echo "Aqua admin password is $ADMIN_PASSWORD
-echo "Jenkins assigned Address is: http://172.42.42.101:8080
+echo "Jenkins assigned Address is: http://172.42.42.101:8080"
 echo "Jenkins user name is administrator"
 echo "Jenkins user password is Password1"
 
