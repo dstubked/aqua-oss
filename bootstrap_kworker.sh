@@ -166,6 +166,7 @@ echo "Jenkins user password is Password1"
 
 [TASK 6] Set Enforcer to Enforce
 # Set enforcer to enforce
+sleep 120
 curl -H 'Content-Type: application/json' -X GET -u $ADMIN_USER:$ADMIN_PASSWORD $aqua_console_url/api/v1/hostsbatch/aquactl-default > enforce.json
 sed -i 's/\"enforce\":false/\"enforce\":true/g' enforce.json
 curl -H 'Content-Type: application/json' -X PUT -u $ADMIN_USER:$ADMIN_PASSWORD -d @enforce.json $aqua_console_url/api/v1/hostsbatch?update_enforcers=true
