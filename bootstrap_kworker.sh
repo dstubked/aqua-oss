@@ -120,7 +120,6 @@ kubectl --kubeconfig=/home/vagrant/.kube/config get svc -n aqua
 NodePort=`kubectl --kubeconfig=/home/vagrant/.kube/config describe service aqua-web -n aqua | grep NodePort | grep aqua-web | tail -1 | awk '{print substr($3,1,5)}'`
 aqua_console_url="http://172.42.42.101:$NodePort"
 echo ""
-echo "Kubernetes Assigned Aqua Address is: $aqua_console_url"
 
 printf "\nChecking if Aqua Server is up\n"
 i=1
@@ -137,6 +136,11 @@ printf '\n'
 echo "Success!"
 echo "Get Aqua status: kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua"
 kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
+
+# Set enforcer to enforce
+curl -H 'Content-Type: application/json' -X GET -u $ADMIN_USER:$ADMIN_PASSWORD $aqua_console_url/api/v1/hostsbatch/aquactl-default > enforce.json
+sed -i 's/\"enforce\":false/\"enforce\":true/g' enforce.json
+curl -H 'Content-Type: application/json' -X PUT -u $ADMIN_USER:$ADMIN_PASSWORD -d @enforce.json $aqua_console_url/api/v1/hostsbatch?update_enforcers=true
 
 echo "[TASK 3] Deploy Sock Shop"
 
@@ -158,3 +162,10 @@ kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubuserc
 docker run -d --name jenkins-server --restart=always -p 8080:8080 dstubked/jenkins:latest
 
 echo "* * * * Demo Setup Completed! * * * *"
+echo "Kubernetes Assigned Aqua Address is: $aqua_console_url."
+echo "Aqua admin user name is $ADMIN_USER
+echo "Aqua admin password is $ADMIN_PASSWORD
+echo "Jenkins assigned Address is: http://172.42.42.101:8080
+echo "Jenkins user name is administrator"
+echo "Jenkins user password is Password1"
+
