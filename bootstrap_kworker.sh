@@ -137,11 +137,6 @@ echo "Success!"
 echo "Get Aqua status: kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua"
 kubectl --kubeconfig=/home/vagrant/.kube/config get pods -n aqua
 
-# Set enforcer to enforce
-curl -H 'Content-Type: application/json' -X GET -u $ADMIN_USER:$ADMIN_PASSWORD $aqua_console_url/api/v1/hostsbatch/aquactl-default > enforce.json
-sed -i 's/\"enforce\":false/\"enforce\":true/g' enforce.json
-curl -H 'Content-Type: application/json' -X PUT -u $ADMIN_USER:$ADMIN_PASSWORD -d @enforce.json $aqua_console_url/api/v1/hostsbatch?update_enforcers=true
-
 echo "[TASK 3] Deploy Sock Shop"
 
 kubectl --kubeconfig=/home/vagrant/.kube/config create namespace sock-shop
@@ -149,7 +144,7 @@ kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubuserc
 
 # Setup Wordpress Demo
 # Set a new secret
-echo "[TASK 4] Deploy Sock Shop"
+echo "[TASK 4] Deploy Wordpress"
 sleep 60
 curl "${aqua_console_url}/api/v1/secrets" -u $ADMIN_USER:$ADMIN_PASSWORD -X POST  -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"key":"mysql.password","source":"aqua","source_type":"aqua","password":"SecretPasswordMYSQL"}' --compressed
 sleep 5
@@ -158,7 +153,7 @@ echo
 kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubusercontent.com/dstubked/aqua-oss/master/blog-wordpress.yaml
 
 # Deploy Jenkins on Docker
-[TASK 4] Deploy Sock Shop
+[TASK 5] Deploy Jenkins
 docker run -d --name jenkins-server --restart=always -p 8080:8080 dstubked/jenkins:latest
 
 echo "* * * * Demo Setup Completed! * * * *"
@@ -169,3 +164,8 @@ echo "Jenkins assigned Address is: http://172.42.42.101:8080"
 echo "Jenkins user name is administrator"
 echo "Jenkins user password is Password1"
 
+[TASK 6] Set Enforcer to Enforce
+# Set enforcer to enforce
+curl -H 'Content-Type: application/json' -X GET -u $ADMIN_USER:$ADMIN_PASSWORD $aqua_console_url/api/v1/hostsbatch/aquactl-default > enforce.json
+sed -i 's/\"enforce\":false/\"enforce\":true/g' enforce.json
+curl -H 'Content-Type: application/json' -X PUT -u $ADMIN_USER:$ADMIN_PASSWORD -d @enforce.json $aqua_console_url/api/v1/hostsbatch?update_enforcers=true
