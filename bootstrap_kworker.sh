@@ -157,7 +157,7 @@ kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubuserc
 [TASK 5] Deploy Jenkins
 docker login --username $AQUA_REGISTRY_USERNAME --password $AQUA_REGISTRY_PASSWORD registry.aquasec.com
 docker pull registry.aquasec.com/scanner:$IMAGE_TAG
-docker run -d --name jenkins-server --restart=always -p 8080:8080 dstubked/jenkins:latest
+docker run -d --name jenkins-server -e SCANNER_IMAGE=$SCANNER_IMAGE -e aqua_console_url=$aqua_console_url --restart=always -p 8080:8080 dstubked/jenkins:latest
 
 echo "* * * * Demo Setup Completed! * * * *"
 echo "Kubernetes Assigned Aqua Address is: $aqua_console_url."
