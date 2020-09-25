@@ -5,6 +5,7 @@ ADMIN_USER=administrator
 ADMIN_PASSWORD=XXXXXXXX
 AQUA_LICENSE_KEY="XXXXXXXX"
 IMAGE_TAG=5.3.20261
+SCANNER_IMAGE=registry.aquasec.com/scanner:$IMAGE_TAG
 
 # Join worker nodes to the Kubernetes cluster
 echo "[TASK 1] Join node to Kubernetes Cluster"
