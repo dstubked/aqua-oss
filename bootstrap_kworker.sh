@@ -154,7 +154,7 @@ echo
 kubectl --kubeconfig=/home/vagrant/.kube/config apply -f https://raw.githubusercontent.com/dstubked/aqua-oss/master/blog-wordpress.yaml
 
 # Deploy Jenkins on Docker
-[TASK 5] Deploy Jenkins
+echo "[TASK 5] Deploy Jenkins"
 docker login --username $AQUA_REGISTRY_USERNAME --password $AQUA_REGISTRY_PASSWORD registry.aquasec.com
 docker pull registry.aquasec.com/scanner:$IMAGE_TAG
 docker run -d --name jenkins-server -e SCANNER_IMAGE=$SCANNER_IMAGE -e aqua_console_url=$aqua_console_url --restart=always -p 8080:8080 dstubked/jenkins:latest
@@ -167,7 +167,7 @@ echo "Jenkins assigned Address is: http://172.42.42.101:8080"
 echo "Jenkins user name is admin"
 echo "Jenkins user password is Password1"
 
-[TASK 6] Set Enforcer to Enforce
+echo "[TASK 6] Set Enforcer to Enforce"
 # Set enforcer to enforce
 sleep 120
 curl -H 'Content-Type: application/json' -X GET -u $ADMIN_USER:$ADMIN_PASSWORD $aqua_console_url/api/v1/hostsbatch/aquactl-default > enforce.json
