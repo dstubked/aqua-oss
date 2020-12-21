@@ -4,7 +4,7 @@ AQUA_REGISTRY_PASSWORD="XXXXXXXX"
 ADMIN_USER=administrator
 ADMIN_PASSWORD=XXXXXXXX
 AQUA_LICENSE_KEY="XXXXXXXX"
-IMAGE_TAG=5.3.20261
+IMAGE_TAG=5.3.20350
 SCANNER_IMAGE=registry.aquasec.com/scanner:$IMAGE_TAG
 
 # Join worker nodes to the Kubernetes cluster
